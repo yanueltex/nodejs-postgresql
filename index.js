@@ -2,6 +2,9 @@ const express = require('express');
 const cors = require('cors');
 const routerApi = require('./routes');
 
+// Aqui importamos el Middleware para nuestra Autenticación
+const { checkApiKey } = require('./middlewares/auth.handler');
+
 const {
   logErrors,
   errorHandler,
@@ -26,11 +29,14 @@ const options = {
 };
 app.use(cors(options));
 
+require('./utils/auth'); // Aquí se ejecuta el LocalStrategy
+
 app.get('/', (req, res) => {
   res.send('Hola mi server en express');
 });
 
-app.get('/nueva-ruta', (req, res) => {
+// Validación con Middleware
+app.get('/nueva-ruta', checkApiKey, (req, res) => {
   res.send('Hola, soy una nueva ruta');
 });
 

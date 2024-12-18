@@ -36,7 +36,7 @@ const OrderSchema = {
   total: {
     type: DataTypes.VIRTUAL, // Para que Sequelize sepa que éste no es un campo de la tabla
     get() {
-      if (this.items.length > 0) {
+      if (this.items && this.items.length > 0) {
         // items es la manera que llamamos la sesion, busca abajo...
         return this.items.reduce((total, item) => {
           return total + item.price * item.OrderProduct.amount;
